@@ -1,0 +1,28 @@
+[project]
+name = "issue-classifier"
+version = "0.1.0"
+description = "Issue-classifier project"
+readme = "README.md"
+authors = [
+    { name = "Miguel Reinoso", email = "miguelreinoso2007@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "httpx>=0.28.1",
+    "pandas>=3.1.1",
+    "sentence-transformers>=6.3.0",
+]
+[dependency-groups]
+dev = [
+    "mypy>=2.3.1",
+    "pytest>=9.1.1",
+    "ruff>=0.16.8",
+]
+
+[project.scripts]
+issue-classifier = "issue_classifier:main"
+
+[build-system]
+requires = ["uv_build>=0.12.15,<0.13.0"]
+build-backend = "uv_build"
