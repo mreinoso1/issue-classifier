@@ -1,6 +1,7 @@
 import httpx
 import pandas as pd
 
+
 def params_dict(labels: str) -> dict:
     return {"labels": labels, "state": "closed","per_page":100}
 
@@ -10,7 +11,7 @@ def filter_pr(json_aux:dict, json_url:list) -> None:
             continue
         json_url.append(json_aux[k])
 
-def next_page(url:str, headers:dict, current_params:dict | None,client:httpx.Client,json_url:list[dict]) -> None:
+def next_page(url:str | None, headers:dict, current_params:dict | None,client:httpx.Client,json_url:list[dict]) -> None:
     """
     Appends the cleaned issues of each page to json_url
     """
@@ -22,7 +23,7 @@ def next_page(url:str, headers:dict, current_params:dict | None,client:httpx.Cli
         url = response.links.get("next",{}).get('url')
         current_params = None
     
-def add_to_finalDf(clean_json:dict,repos_list:str,params_labels:str) -> pd.DataFrame:
+def add_to_finalDf(clean_json:list[dict],repos_list:str,params_labels:str) -> pd.DataFrame:
     """
     Used after next_page(). It adds the APIs to df_final via pandas concatenation
     """
@@ -42,7 +43,7 @@ def issues_getter(repos_conf,url_list:list[str], headers:dict, client:httpx.Clie
         
         for labels, github_label in repo_labels.items():
             url = url_list[i]
-            json_url = []
+            json_url:list[dict] = []
             params = params_dict(github_label)
             next_page(url=url,headers=headers,current_params=params,client = client,json_url=json_url)
             if len(json_url) == 0:

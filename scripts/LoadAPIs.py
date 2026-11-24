@@ -1,7 +1,8 @@
 import os
-from dotenv import load_dotenv
+
 import httpx
-from issue_classifier import ingest
+from dotenv import load_dotenv
+
 from issue_classifier.ingest.ingest import issues_getter
 
 load_dotenv()

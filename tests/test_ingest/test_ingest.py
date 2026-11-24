@@ -155,15 +155,14 @@ def test_next_page_raises_on_http_500(mock_client, github_headers):
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(500, json={"message": "upstream exploded"})
 
-    with mock_client(handler) as client:
-        with pytest.raises(httpx.HTTPStatusError):
-            next_page(
-                url=WIDGET_ISSUES_URL,
-                headers=github_headers,
-                current_params={"labels": "bug", "state": "closed", "per_page": 100},
-                client=client,
-                json_url=[],
-            )
+    with mock_client(handler) as client, pytest.raises(httpx.HTTPStatusError):
+        next_page(
+            url=WIDGET_ISSUES_URL,
+            headers=github_headers,
+            current_params={"labels": "bug", "state": "closed", "per_page": 100},
+            client=client,
+            json_url=[],
+        )
 
 
 # --- add_to_finalDf ----------------------------------------------------------
