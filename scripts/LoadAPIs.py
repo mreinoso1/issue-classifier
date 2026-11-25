@@ -1,5 +1,5 @@
 import os
-
+from pathlib import Path
 import httpx
 from dotenv import load_dotenv
 
@@ -58,4 +58,6 @@ repo_conf = {
 with httpx.Client(timeout=30.0) as client:
     df_final = issues_getter(repos_conf=repo_conf,url_list=url_list, headers=headers,client=client)
 
-    print(df_final)
+root = Path(__file__).resolve().parents[1]
+path = root / "data" / "raw" / "API_Collection"
+df_final.to_parquet(path=path)
