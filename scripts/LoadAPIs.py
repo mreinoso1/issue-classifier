@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+
 import httpx
 from dotenv import load_dotenv
 
@@ -15,18 +16,12 @@ headers = {
     'X-GitHub-Api-Version': '2026-03-10',
     'Authorization': f'Bearer {api_token}'
 }
-params_labels = ['feature','bug','docs','support']
-feat_labels = ['feature', 'New Feature','c:new feature','Feature request']
-bugs_labels = ['bug', 'Bug','bug', 'bug']
-doc_labels = ['docs', 'Documentation', 'documentation','Documentation']
-question_labels = ['question','Question', 'question','Usage']
 url_list = [
             "https://api.github.com/repos/fastapi/fastapi/issues",
             "https://api.github.com/repos/scikit-learn/scikit-learn/issues",
             "https://api.github.com/repos/supabase/supabase/issues",
             "https://api.github.com/repos/huggingface/transformers/issues"
             ]
-repos_list = ["fastapi","scikit-learn","supabase","transformers"]
 
 repo_conf = {
     'fastapi': {
@@ -59,5 +54,5 @@ with httpx.Client(timeout=30.0) as client:
     df_final = issues_getter(repos_conf=repo_conf,url_list=url_list, headers=headers,client=client)
 
 root = Path(__file__).resolve().parents[1]
-path = root / "data" / "raw" / "API_Collection"
-df_final.to_parquet(path=path)
+path = root / "data" / "raw" / "Issues.parquet"
+df_final.to_parquet(path=path, index=False)
